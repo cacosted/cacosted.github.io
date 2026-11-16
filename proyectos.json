@@ -1,0 +1,66 @@
+[
+  {
+    "nombre": "Checkpoint Studio",
+    "url": "https://cacosted.github.io/checkpoint-studio/",
+    "categoria": "canal",
+    "descripcion": "Importa el guion en PDF desde Notion, revisa los eventos y saca todos los checkpoints con sus plantillas listas para editar (PNG y SVG).",
+    "miniatura": "thumbs/checkpoint-studio.jpg",
+    "repo": "cacosted/checkpoint-studio"
+  },
+  {
+    "nombre": "Memehub",
+    "url": "https://cacosted.github.io/memehub/",
+    "categoria": "canal",
+    "descripcion": "Mis memes y el tablero de Pinterest con buscador por situación (\"perdí por mala suerte\", \"plan malvado\") para encontrar el meme justo al editar.",
+    "miniatura": "thumbs/memehub.jpg",
+    "repo": "cacosted/memehub"
+  },
+  {
+    "nombre": "Scripts para DaVinci Resolve",
+    "url": "https://cacosted.github.io/davinci-scripts/",
+    "categoria": "canal",
+    "descripcion": "Busca un script (quitar silencios, cortes, limpieza de audio), ajusta sus parámetros y cópialo listo para pegar en la consola de Resolve.",
+    "miniatura": "thumbs/davinci-scripts.jpg",
+    "repo": "cacosted/davinci-scripts"
+  },
+  {
+    "nombre": "platsprites",
+    "url": "https://cacosted.github.io/platsprites-web/",
+    "categoria": "canal",
+    "descripcion": "Cambia los sprites del protagonista y los rivales en ROMs de Platino, HeartGold, SoulSilver, Negro, Blanco y Esmeralda. Todo corre en el navegador; la ROM no sale de tu compu.",
+    "miniatura": "thumbs/platsprites-web.jpg",
+    "repo": "cacosted/platsprites-web"
+  },
+  {
+    "nombre": "Cacosdex",
+    "url": "https://cacosdex.web.app/",
+    "categoria": "pokemon",
+    "descripcion": "Pokédex por juego con dónde conseguir cada objeto y MT, armador de equipos y listas de capturados que se sincronizan entre compu y celular. Funciona sin internet.",
+    "miniatura": "thumbs/cacosdex.jpg",
+    "repo": "cacosted/cacosdex"
+  },
+  {
+    "nombre": "Journey Tracker",
+    "url": "https://cacosted.github.io/journey-tracker/",
+    "categoria": "pokemon",
+    "descripcion": "Lleva el registro de tus runs Nuzlocke, con datos de PokéAPI y nuzlocke.data.",
+    "miniatura": "thumbs/journey-tracker.jpg",
+    "repo": "cacosted/journey-tracker"
+  },
+  {
+    "nombre": "Pokémon DS en línea",
+    "url": "https://cacosted.github.io/pokemon-ds-online/",
+    "categoria": "diversion",
+    "descripcion": "Guía para intercambiar y combatir en Platino y SoulSilver por internet (Wiimmfi) desde Mac, iPhone o Android.",
+    "miniatura": "thumbs/pokemon-ds-online.jpg",
+    "repo": "cacosted/pokemon-ds-online"
+  },
+  {
+    "nombre": "Pokémon GBA online",
+    "url": "https://cacosted.github.io/pokemon-online/",
+    "categoria": "diversion",
+    "descripcion": "Guía para jugar FireRed, Emerald y Quetzal online entre hermanos, cada quien desde su país.",
+    "miniatura": "thumbs/pokemon-online.jpg",
+    "repo": "cacosted/pokemon-online"
+  }
+]
