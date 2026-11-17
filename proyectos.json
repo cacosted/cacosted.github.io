@@ -32,6 +32,14 @@
     "repo": "cacosted/platsprites-web"
   },
   {
+    "nombre": "Ruleta de Nombres",
+    "url": "https://ruleta-cacosted.netlify.app/",
+    "categoria": "canal",
+    "descripcion": "Ruleta que se llena con los nombres de quienes comentan en los últimos videos del canal, filtrados por palabras clave. Tiene modo grabación para usarla en video.",
+    "miniatura": "thumbs/ruleta-de-nombres.jpg",
+    "repo": "cacosted/ruleta-de-nombres"
+  },
+  {
     "nombre": "Cacosdex",
     "url": "https://cacosdex.web.app/",
     "categoria": "pokemon",
