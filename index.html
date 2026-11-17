@@ -71,6 +71,21 @@
   .seccion h2 { font-size: 22px; margin: 0; letter-spacing: -.01em; }
   .seccion .nota { margin: 2px 0 16px; color: var(--muted); font-size: 15px; }
   .body h3 { font-size: 18px; margin: 0; }
+  .recientes { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); }
+  .mini {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 8px; color: inherit; text-decoration: none; min-width: 0;
+    transition: border-color .15s ease;
+  }
+  .mini:hover, .mini:focus-visible { border-color: var(--accent); outline: none; }
+  .mini img { width: 80px; height: 50px; object-fit: cover; object-position: top; border-radius: 6px; flex: none; background: var(--chip); }
+  .mini div { min-width: 0; }
+  .mini strong { display: block; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mini span { font-size: 13px; color: var(--muted); }
+  .seccion .titulo { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .limpiar { background: none; border: 0; padding: 0; color: var(--muted); font: inherit; font-size: 13px; cursor: pointer; text-decoration: underline; }
+  .limpiar:hover { color: var(--accent); }
   .body p { margin: 0; color: var(--muted); font-size: 15px; flex: 1; }
   .url { font-size: 13px; color: var(--accent); overflow-wrap: anywhere; }
   footer { margin-top: 40px; color: var(--muted); font-size: 13px; }
@@ -109,6 +124,48 @@
     return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   }
 
+  // Últimos visitados: se guardan solo en este navegador (localStorage).
+  const CLAVE = "visitados";
+  const MAX_RECIENTES = 4;
+
+  function leerVisitados() {
+    try { return JSON.parse(localStorage.getItem(CLAVE)) || []; } catch { return []; }
+  }
+
+  function guardarVisita(url) {
+    const lista = [{ url, t: Date.now() }, ...leerVisitados().filter(v => v.url !== url)].slice(0, 20);
+    try { localStorage.setItem(CLAVE, JSON.stringify(lista)); } catch {}
+  }
+
+  function haceCuanto(t) {
+    const min = Math.round((Date.now() - t) / 60000);
+    if (min < 1) return "hace un momento";
+    if (min < 60) return `hace ${min} min`;
+    const h = Math.round(min / 60);
+    if (h < 24) return `hace ${h} h`;
+    const d = Math.round(h / 24);
+    return d === 1 ? "ayer" : `hace ${d} días`;
+  }
+
+  function seccionRecientes() {
+    const recientes = leerVisitados()
+      .map(v => ({ ...proyectos.find(p => p.url === v.url), t: v.t }))
+      .filter(p => p.nombre)
+      .slice(0, MAX_RECIENTES);
+    if (!recientes.length) return "";
+    return `
+      <section class="seccion">
+        <div class="titulo"><h2>Últimos visitados</h2><button type="button" class="limpiar" id="limpiar">Borrar historial</button></div>
+        <p class="nota">Lo que abriste hace poco desde este navegador.</p>
+        <div class="recientes">${recientes.map(p => `
+          <a class="mini" href="${esc(p.url)}" target="_blank" rel="noopener">
+            <img src="${esc(p.miniatura)}" alt="" width="80" height="50">
+            <div><strong>${esc(p.nombre)}</strong><span>${haceCuanto(p.t)}</span></div>
+          </a>`).join("")}
+        </div>
+      </section>`;
+  }
+
   function tarjeta(p) {
     return `
       <a class="card" href="${esc(p.url)}" target="_blank" rel="noopener">
@@ -121,9 +178,12 @@
       </a>`;
   }
 
+  let filtro = "todos";
+
   function pintar(cat) {
+    filtro = cat;
     const secciones = cat === "todos" ? SECCIONES : SECCIONES.filter(s => s.cat === cat);
-    grid.innerHTML = secciones.map(s => {
+    grid.innerHTML = (cat === "todos" ? seccionRecientes() : "") + secciones.map(s => {
       const lista = proyectos.filter(p => p.categoria === s.cat);
       if (!lista.length) return "";
       return `
@@ -139,6 +199,26 @@
     document.querySelectorAll(".filtros button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
     pintar(b.dataset.cat);
   }));
+
+  // Un clic (o clic medio) en cualquier proyecto lo cuenta como visitado.
+  function alAbrir(e) {
+    const a = e.target.closest("a.card, a.mini");
+    if (a) {
+      guardarVisita(a.getAttribute("href"));
+      setTimeout(() => pintar(filtro), 0);
+    }
+  }
+  grid.addEventListener("click", e => {
+    if (e.target.id === "limpiar") {
+      try { localStorage.removeItem(CLAVE); } catch {}
+      pintar(filtro);
+      return;
+    }
+    alAbrir(e);
+  });
+  grid.addEventListener("auxclick", e => { if (e.button === 1) alAbrir(e); });
+  // Al volver a la pestaña, refresca los "hace X min" y lo visitado desde otra pestaña.
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && proyectos.length) pintar(filtro); });
 
   fetch("proyectos.json")
     .then(r => r.json())
